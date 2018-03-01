@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace ConsoleApp
@@ -81,6 +82,46 @@ namespace ConsoleApp
             _forwardOrderedNodes = forwardOrderedNodes;
             _outputNodes = outputNodes;
             _outputNodeId = outputNodeId;
+        }
+
+        public string GetTrainingFunctionCode()
+        {
+            var builder = new StringBuilder();
+
+            builder.AppendLine("public float[] GetDeltas(float[] inputs, float[] outputs, float[] w)");
+            builder.AppendLine("{");
+            builder.AppendLine($"var d = new float[{_numberOfWeights + 1}];");
+
+            for (var i = 0; i < _inputVectorSize; i++)
+            {
+                builder.AppendLine($"var in{i} = inputs[{i}];");
+            }
+
+            foreach (var node in _forwardOrderedNodes)
+            {
+                node.AddForwardPropCodeRefWeights(builder);
+            }
+
+            builder.Append("var error = Math.Sqrt(");
+            builder.AppendJoin("+", _outputNodes.Select((id, i) => $"Math.Pow(out{id} - outputs[{i}], 2)"));
+            builder.AppendLine(");");
+            builder.AppendLine($"d[{_numberOfWeights}] = error;");
+
+            for (var i = 0; i < _outputNodes.Length; i++)
+            {
+                builder.Append($"var pOut{_outputNodeId}For{_outputNodes[i]} = ");
+                builder.AppendLine($"(out{_outputNodes[i]} - outputs[{i}]) / error;");
+            }
+
+            foreach (var node in _forwardOrderedNodes.Reverse())
+            {
+                node.AddBackPropCode(builder);
+            }
+
+            builder.AppendLine("return d;");
+            builder.AppendLine("}");
+
+            return builder.ToString();
         }
     }
 }
