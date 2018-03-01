@@ -1,0 +1,13 @@
+﻿{
+  "Nodes": [
+    {
+      "NodeId": 0,
+      "Aggregator": "sum",
+      "Processor": "sigmoid",
+      "Inputs": [
+        {"FromInputVector": true, "InputId": 0, "Weight":0.5 },
+        {"FromInputVector": true, "InputId": 1, "Weight":0.5 },
+      ] 
+    }
+  ] 
+}
