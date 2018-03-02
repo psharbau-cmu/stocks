@@ -159,5 +159,13 @@ namespace ConsoleApp
 
             return (inputs, outputs, weights) => runner.GetDeltas(inputs, outputs, weights);
         }
+
+        public void ReadWeights(float[] weights)
+        {
+            foreach (var node in _forwardOrderedNodes)
+            {
+                node.ReadWeights(weights);
+            }
+        }
     }
 }
