@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using Microsoft.CodeAnalysis.CSharp.Scripting;
+using Microsoft.CodeAnalysis.Scripting;
+using Microsoft.CodeAnalysis.Scripting.Hosting;
 
 namespace ConsoleApp
 {
@@ -84,11 +88,30 @@ namespace ConsoleApp
             _outputNodeId = outputNodeId;
         }
 
-        public string GetTrainingFunctionCode()
+        public int NumberOfWeights => _numberOfWeights;
+
+        public void FillWeights(float[] weights)
+        {
+            foreach (var node in _forwardOrderedNodes)
+            {
+                node.InitializeWeights(weights);
+            }
+        }
+
+        public interface IDeltaProvider
+        {
+            float[] GetDeltas(float[] inputs, float[] outputs, float[] weights);
+        }
+
+        public Func<float[], float[], float[], float[]> GetTrainingFunction()
         {
             var builder = new StringBuilder();
 
-            builder.AppendLine("public float[] GetDeltas(float[] inputs, float[] outputs, float[] w)");
+            builder.AppendLine("using System;");
+            builder.AppendLine("using ConsoleApp;");
+            builder.AppendLine("public class DeltaProvider : Net.IDeltaProvider");
+            builder.AppendLine("{");
+            builder.AppendLine("public float[] GetDeltas(float[] inputs, float[] outputs, float[] weights)");
             builder.AppendLine("{");
             builder.AppendLine($"var d = new float[{_numberOfWeights + 1}];");
 
@@ -102,14 +125,14 @@ namespace ConsoleApp
                 node.AddForwardPropCodeRefWeights(builder);
             }
 
-            builder.Append("var error = Math.Sqrt(");
+            builder.Append("var error = (float)Math.Sqrt(");
             builder.AppendJoin("+", _outputNodes.Select((id, i) => $"Math.Pow(out{id} - outputs[{i}], 2)"));
             builder.AppendLine(");");
             builder.AppendLine($"d[{_numberOfWeights}] = error;");
 
             for (var i = 0; i < _outputNodes.Length; i++)
             {
-                builder.Append($"var pOut{_outputNodeId}For{_outputNodes[i]} = ");
+                builder.Append($"var pOut{_outputNodeId}for{_outputNodes[i]} = ");
                 builder.AppendLine($"(out{_outputNodes[i]} - outputs[{i}]) / error;");
             }
 
@@ -120,8 +143,21 @@ namespace ConsoleApp
 
             builder.AppendLine("return d;");
             builder.AppendLine("}");
+            builder.AppendLine("}");
 
-            return builder.ToString();
+            var text = builder.ToString();
+
+            var options = ScriptOptions.Default
+                .WithReferences(Assembly.GetCallingAssembly());
+
+            var runner = CSharpScript.Create<IDeltaProvider>(text, options)
+                .ContinueWith("(new DeltaProvider())")
+                .RunAsync()
+                .GetAwaiter()
+                .GetResult()
+                .ReturnValue as IDeltaProvider;
+
+            return (inputs, outputs, weights) => runner.GetDeltas(inputs, outputs, weights);
         }
     }
 }

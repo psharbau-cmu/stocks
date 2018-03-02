@@ -56,7 +56,7 @@ namespace ConsoleApp
         public void AddForwardPropCodeRefWeights(StringBuilder builder)
         {
             var mults = _inputDescriptions
-                .Select(d => $"({(d.Key.FromInputVector ? "in" : "out")}{d.Key.InputId} * w[{d.Value}])");
+                .Select(d => $"({(d.Key.FromInputVector ? "in" : "out")}{d.Key.InputId} * weights[{d.Value}])");
 
             builder.Append($"var {(!string.IsNullOrEmpty(_processor) ? $"agg{Id}" : $"out{Id}")} = ");
             
@@ -111,10 +111,10 @@ namespace ConsoleApp
                     foreach (var input in _inputDescriptions)
                     {
                         builder.AppendLine(
-                            $"d[{input.Value}] = {varName} * {(input.Key.FromInputVector ? "in" : "out")}{input.Key.InputId};");
+                            $"d[{input.Value}] = (float)({varName} * {(input.Key.FromInputVector ? "in" : "out")}{input.Key.InputId});");
                         if (!input.Key.FromInputVector)
                         {
-                            builder.AppendLine($"var pOut{Id}for{input.Key.InputId} = {varName} * w[{input.Value}];");
+                            builder.AppendLine($"var pOut{Id}for{input.Key.InputId} = {varName} * weights[{input.Value}];");
                         }
                     }
                     break;
