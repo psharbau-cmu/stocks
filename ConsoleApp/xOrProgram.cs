@@ -10,7 +10,7 @@ namespace ConsoleApp
     class xOrProgram
     {
         static void Main(string[] args)
-        { 
+        {
             NetDescription description = null;
 
             using (var reader = new StreamReader(File.OpenRead("xOrNet.json")))
@@ -31,7 +31,9 @@ namespace ConsoleApp
 
             var trainer = new Trainer(tests, net);
 
-            trainer.Train(0.25f, 0.5f, 0.0001f, 1000);
+            trainer.Train(.5f, 0f, 0.0001f, 1000000);
+
+            Console.WriteLine(JsonConvert.SerializeObject(net.Description, Formatting.Indented));
 
             Console.ReadKey();
         }

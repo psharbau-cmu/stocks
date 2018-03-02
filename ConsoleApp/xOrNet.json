@@ -2,23 +2,26 @@
   "Nodes": [
     {
       "NodeId": 0, "Aggregator": "sum", "Processor": "sigmoid",
+      "Weight": 0.002, 
       "Inputs": [
-        {"FromInputVector": true, "InputId": 0, "Weight":0.5 },
-        {"FromInputVector": true, "InputId": 1, "Weight":0.5 }
+        {"FromInputVector": true, "InputId": 0, "Weight":-0.012 },
+        {"FromInputVector": true, "InputId": 1, "Weight":-0.0302 }
       ] 
     },
     {
       "NodeId": 1, "Aggregator": "sum", "Processor": "sigmoid",
+      "Weight": -0.0011, 
       "Inputs": [
-        {"FromInputVector": true, "InputId": 0, "Weight":0.5 },
-        {"FromInputVector": true, "InputId": 1, "Weight":0.5 }
+        {"FromInputVector": true, "InputId": 0, "Weight":0.015 },
+        {"FromInputVector": true, "InputId": 1, "Weight":-0.022 }
       ] 
     },
     {
       "NodeId": 2, "Aggregator": "sum", "Processor": "sigmoid",
+      "Weight": 0.0021, 
       "Inputs": [
-        {"FromInputVector": false, "InputId": 0, "Weight":0.5 },
-        {"FromInputVector": false, "InputId": 1, "Weight":0.5 }
+        {"FromInputVector": false, "InputId": 0, "Weight":0.044 },
+        {"FromInputVector": false, "InputId": 1, "Weight": 0.033  }
       ] 
     }
   ], 

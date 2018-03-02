@@ -9,17 +9,21 @@ namespace ConsoleApp
     {
         private readonly string _aggregator;
         private readonly string _processor;
+        private readonly int _weightIndex;
 
+        private float _weight;
         private HashSet<int> _inputNodes = new HashSet<int>();
         private HashSet<int> _downstreamNodes = new HashSet<int>();
 
         private Dictionary<NodeInputDescription, int> _inputDescriptions = new Dictionary<NodeInputDescription, int>();
 
-        public Node(int id, string aggregator, string processor)
+        public Node(int id, string aggregator, string processor, float weight, int weightIndex)
         {
             Id = id;
             _aggregator = aggregator;
             _processor = processor;
+            _weight = weight;
+            _weightIndex = weightIndex;
         }
 
         public int Id { get; }
@@ -37,8 +41,9 @@ namespace ConsoleApp
             _downstreamNodes.Add(nodeId);
         }
 
-        public void InitializeWeights(float[] weights)
+        public void FillWeights(float[] weights)
         {
+            weights[_weightIndex] = _weight;
             foreach (var kvp in _inputDescriptions)
             {
                 weights[kvp.Value] = kvp.Key.Weight;
@@ -47,23 +52,36 @@ namespace ConsoleApp
 
         public void ReadWeights(float[] weights)
         {
+            _weight = weights[_weightIndex];
             foreach (var kvp in _inputDescriptions)
             {
                 kvp.Key.Weight = weights[kvp.Value];
             }
         }
 
+        public NodeDescription Description => new NodeDescription()
+            {
+                NodeId = Id,
+                Aggregator = _aggregator,
+                Processor = _processor,
+                Weight = _weight,
+                Inputs = _inputDescriptions
+                .Select(input => input.Key.Clone() as NodeInputDescription)
+                .ToArray()
+            };
+
         public void AddForwardPropCodeRefWeights(StringBuilder builder)
         {
             var mults = _inputDescriptions
-                .Select(d => $"({(d.Key.FromInputVector ? "in" : "out")}{d.Key.InputId} * weights[{d.Value}])");
+                .Select(d => $"({(d.Key.FromInputVector ? "in" : "out")}{d.Key.InputId} * weights[{d.Value}])")
+                .Concat(new [] {$"weights[{_weightIndex}]"});
 
             builder.Append($"var {(!string.IsNullOrEmpty(_processor) ? $"agg{Id}" : $"out{Id}")} = ");
             
             switch (_aggregator)
             {
                 case "sum":
-                    builder.Append(string.Join("+", mults));
+                    builder.AppendJoin("+", mults);
                     builder.AppendLine(";");
                     break;
                 default:
@@ -76,7 +94,7 @@ namespace ConsoleApp
             switch (_processor)
             {
                 case "sigmoid":
-                    builder.AppendLine($"1 / (1 - Math.Pow(Math.E, -1 * agg{Id}));");
+                    builder.AppendLine($"1 / (1 + Math.Pow(Math.E, -1 * agg{Id}));");
                     break;
                 default:
                     throw new Exception($"Unknown processor {_processor}");
@@ -108,6 +126,7 @@ namespace ConsoleApp
             switch (_aggregator)
             {
                 case "sum":
+                    builder.AppendLine($"d[{_weightIndex}] = (float){varName};");
                     foreach (var input in _inputDescriptions)
                     {
                         builder.AppendLine(

@@ -22,14 +22,13 @@ namespace ConsoleApp
 
             foreach (var nodeDescription in description.Nodes)
             {
-                var node = new Node(nodeDescription.NodeId, nodeDescription.Aggregator, nodeDescription.Processor);
+                var node = new Node(nodeDescription.NodeId, nodeDescription.Aggregator, nodeDescription.Processor, nodeDescription.Weight, nextWeightId++);
                 nodes.Add(node.Id, node);
                 if (node.Id > maxNodeId) maxNodeId = node.Id;
 
                 foreach (var input in nodeDescription.Inputs)
                 {
-                    node.AddInput(input, nextWeightId);
-                    nextWeightId += 1;
+                    node.AddInput(input, nextWeightId++);
                     if (input.FromInputVector && input.InputId > maxInputId) maxInputId = input.InputId;
                 }
             }
@@ -88,31 +87,27 @@ namespace ConsoleApp
             _outputNodeId = outputNodeId;
         }
 
+        public NetDescription Description => new NetDescription()
+        {
+            Nodes = _forwardOrderedNodes.Select(node => node.Description).ToArray(),
+            Outputs = _outputNodes
+        };
+
         public int NumberOfWeights => _numberOfWeights;
 
         public void FillWeights(float[] weights)
         {
             foreach (var node in _forwardOrderedNodes)
             {
-                node.InitializeWeights(weights);
+                node.FillWeights(weights);
             }
-        }
-
-        public interface IDeltaProvider
-        {
-            float[] GetDeltas(float[] inputs, float[] outputs, float[] weights);
         }
 
         public Func<float[], float[], float[], float[]> GetTrainingFunction()
         {
             var builder = new StringBuilder();
 
-            builder.AppendLine("using System;");
-            builder.AppendLine("using ConsoleApp;");
-            builder.AppendLine("public class DeltaProvider : Net.IDeltaProvider");
-            builder.AppendLine("{");
-            builder.AppendLine("public float[] GetDeltas(float[] inputs, float[] outputs, float[] weights)");
-            builder.AppendLine("{");
+            builder.AppendLine("((float[] inputs, float[] outputs, float[] weights) => {");
             builder.AppendLine($"var d = new float[{_numberOfWeights + 1}];");
 
             for (var i = 0; i < _inputVectorSize; i++)
@@ -142,22 +137,20 @@ namespace ConsoleApp
             }
 
             builder.AppendLine("return d;");
-            builder.AppendLine("}");
-            builder.AppendLine("}");
+            builder.AppendLine("})");
 
             var text = builder.ToString();
 
             var options = ScriptOptions.Default
+                .AddImports("System")
                 .WithReferences(Assembly.GetCallingAssembly());
 
-            var runner = CSharpScript.Create<IDeltaProvider>(text, options)
-                .ContinueWith("(new DeltaProvider())")
+            return CSharpScript
+                .Create<Func<float[], float[], float[], float[]>>(text, options)
                 .RunAsync()
                 .GetAwaiter()
                 .GetResult()
-                .ReturnValue as IDeltaProvider;
-
-            return (inputs, outputs, weights) => runner.GetDeltas(inputs, outputs, weights);
+                .ReturnValue;
         }
 
         public void ReadWeights(float[] weights)
