@@ -128,7 +128,7 @@ namespace ConsoleApp
             for (var i = 0; i < _outputNodes.Length; i++)
             {
                 builder.Append($"var pOut{_outputNodeId}for{_outputNodes[i]} = ");
-                builder.AppendLine($"outputs[{i}] - out{_outputNodes[i]};");
+                builder.AppendLine($"out{_outputNodes[i]} - outputs[{i}];");
             }
 
             foreach (var node in _forwardOrderedNodes.Reverse())

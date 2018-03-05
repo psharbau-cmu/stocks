@@ -15,24 +15,20 @@ namespace ConsoleApp
             var zebra = new [] {1, 1, 1, 1, .1f, .1f, .1f, .1f, .1f, .1f};
             var giraffe = new [] {1f, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 
-            var tests = new[]
+            var tests = new List<Tuple<float[], float[]>>
             {
                 Tuple.Create(nothing, nothing),
-                Tuple.Create(turtle, turtle),
-                Tuple.Create(turtle, turtle),
-                Tuple.Create(turtle, turtle),
-                Tuple.Create(turtle, turtle),
                 Tuple.Create(turtle, turtle),
                 Tuple.Create(zebra, zebra),
                 Tuple.Create(giraffe, giraffe)
             };
 
-            var description = SimpleDescriptionBuilder.GetDescription(10, new[] {3, 3, 5, 5, 10});
+            var description = SimpleDescriptionBuilder.GetDescription(10, new[] {3, 3,3, 10});
             var net = Net.FromDescription(description);
 
             var trainer = new Trainer(tests, net);
 
-            trainer.Train(.01f, 0, .0001f, 1000000, true);
+            trainer.Train(.01f, .9f, .0001f, 1000000, true);
 
             Console.WriteLine(JsonConvert.SerializeObject(net.Description, Formatting.Indented));
 
