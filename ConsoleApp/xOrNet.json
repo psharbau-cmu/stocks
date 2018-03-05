@@ -17,13 +17,49 @@
       ] 
     },
     {
+      "NodeId": 5, "Aggregator": "sum", "Processor": "sigmoid",
+      "Weight": 0.015, 
+      "Inputs": [
+        {"FromInputVector": true, "InputId": 0, "Weight":0.015 },
+        {"FromInputVector": true, "InputId": 1, "Weight":-0.022 }
+      ] 
+    },
+    {
       "NodeId": 2, "Aggregator": "sum", "Processor": "sigmoid",
-      "Weight": 0.0021, 
+      "Weight": 0.04, 
       "Inputs": [
         {"FromInputVector": false, "InputId": 0, "Weight":0.044 },
-        {"FromInputVector": false, "InputId": 1, "Weight": 0.033  }
+        {"FromInputVector": false, "InputId": 1, "Weight": 0.033  },
+        {"FromInputVector": false, "InputId": 5, "Weight": 0.033  }
+      ] 
+    },
+    {
+      "NodeId": 3, "Aggregator": "sum", "Processor": "sigmoid",
+      "Weight": 0.0012, 
+      "Inputs": [
+        {"FromInputVector": false, "InputId": 0, "Weight":0.044 },
+        {"FromInputVector": false, "InputId": 1, "Weight": 0.033  },
+        {"FromInputVector": false, "InputId": 5, "Weight": 0.033  }
+      ] 
+    },
+    {
+      "NodeId": 6, "Aggregator": "sum", "Processor": "sigmoid",
+      "Weight": 0.0012, 
+      "Inputs": [
+        {"FromInputVector": false, "InputId": 0, "Weight":0.044 },
+        {"FromInputVector": false, "InputId": 1, "Weight": 0.033  },
+        {"FromInputVector": false, "InputId": 5, "Weight": 0.033  }
+      ] 
+    },
+    {
+      "NodeId": 4, "Aggregator": "sum", "Processor": "sigmoid",
+      "Weight": -0.0021, 
+      "Inputs": [
+        {"FromInputVector": false, "InputId": 2, "Weight":0.044 },
+        {"FromInputVector": false, "InputId": 3, "Weight": 0.033  },
+        {"FromInputVector": false, "InputId": 6, "Weight": 0.033  }
       ] 
     }
   ], 
-  "Outputs": [2] 
+  "Outputs": [4] 
 }

@@ -70,6 +70,37 @@ namespace ConsoleApp
                 .ToArray()
             };
 
+        public void AddForwardPropCode(StringBuilder builder)
+        {
+            var mults = _inputDescriptions
+                .Select(d => $"({(d.Key.FromInputVector ? "in" : "out")}{d.Key.InputId} * {d.Key.Weight})")
+                .Concat(new[] { $"{_weight}" });
+
+            builder.Append($"var {(!string.IsNullOrEmpty(_processor) ? $"agg{Id}" : $"out{Id}")} = ");
+
+            switch (_aggregator)
+            {
+                case "sum":
+                    builder.AppendJoin("+", mults);
+                    builder.AppendLine(";");
+                    break;
+                default:
+                    throw new Exception($"Unknown aggregator {_aggregator}");
+            }
+
+            if (string.IsNullOrEmpty(_processor)) return;
+
+            builder.Append($"var out{Id} = ");
+            switch (_processor)
+            {
+                case "sigmoid":
+                    builder.AppendLine($"1 / (1 + Math.Pow(Math.E, -1 * agg{Id}));");
+                    break;
+                default:
+                    throw new Exception($"Unknown processor {_processor}");
+            }
+        }
+
         public void AddForwardPropCodeRefWeights(StringBuilder builder)
         {
             var mults = _inputDescriptions

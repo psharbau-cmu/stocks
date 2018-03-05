@@ -120,7 +120,7 @@ namespace ConsoleApp
                 node.AddForwardPropCodeRefWeights(builder);
             }
 
-            builder.Append("var error = (float)Math.Sqrt(");
+            builder.Append("var error = (float)(");
             builder.AppendJoin("+", _outputNodes.Select((id, i) => $"Math.Pow(out{id} - outputs[{i}], 2)"));
             builder.AppendLine(");");
             builder.AppendLine($"d[{_numberOfWeights}] = error;");
@@ -128,7 +128,7 @@ namespace ConsoleApp
             for (var i = 0; i < _outputNodes.Length; i++)
             {
                 builder.Append($"var pOut{_outputNodeId}for{_outputNodes[i]} = ");
-                builder.AppendLine($"(out{_outputNodes[i]} - outputs[{i}]) / error;");
+                builder.AppendLine($"outputs[{i}] - out{_outputNodes[i]};");
             }
 
             foreach (var node in _forwardOrderedNodes.Reverse())
@@ -142,11 +142,41 @@ namespace ConsoleApp
             var text = builder.ToString();
 
             var options = ScriptOptions.Default
-                .AddImports("System")
-                .WithReferences(Assembly.GetCallingAssembly());
+                .AddImports("System");
 
             return CSharpScript
                 .Create<Func<float[], float[], float[], float[]>>(text, options)
+                .RunAsync()
+                .GetAwaiter()
+                .GetResult()
+                .ReturnValue;
+        }
+
+        public Func<float[], float[]> GetEvaluationFunction()
+        {
+            var builder = new StringBuilder();
+
+            builder.AppendLine("((float[] inputs) => {");
+            for (var i = 0; i < _inputVectorSize; i++)
+            {
+                builder.AppendLine($"var in{i} = inputs[{i}];");
+            }
+            foreach (var node in _forwardOrderedNodes)
+            {
+                node.AddForwardPropCode(builder);
+            }
+            builder.Append("return new float[] { ");
+            builder.AppendJoin(",", _outputNodes.Select(id => $" (float) out{id}"));
+            builder.AppendLine("};");
+            builder.AppendLine("})");
+
+            var text = builder.ToString();
+
+            var options = ScriptOptions.Default
+                .AddImports("System");
+
+            return CSharpScript
+                .Create<Func<float[], float[]>>(text, options)
                 .RunAsync()
                 .GetAwaiter()
                 .GetResult()

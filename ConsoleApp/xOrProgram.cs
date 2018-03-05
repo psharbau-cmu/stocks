@@ -11,13 +11,14 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
-            NetDescription description = null;
+            //NetDescription description = null;
 
-            using (var reader = new StreamReader(File.OpenRead("xOrNet.json")))
-            {
-                var text = reader.ReadToEnd();
-                description = JsonConvert.DeserializeObject<NetDescription>(text);
-            }
+            //using (var reader = new StreamReader(File.OpenRead("xOrNet.json")))
+            //{
+            //    var text = reader.ReadToEnd();
+            //    description = JsonConvert.DeserializeObject<NetDescription>(text);
+            //}
+            var description = SimpleDescriptionBuilder.GetDescription(2, new[] {3, 4, 1});
 
             var net = Net.FromDescription(description);
             
@@ -31,9 +32,16 @@ namespace ConsoleApp
 
             var trainer = new Trainer(tests, net);
 
-            trainer.Train(.5f, 0f, 0.0001f, 1000000);
+            trainer.Train(2f, 0.9f, 0.0001f, 1000000, true);
 
             Console.WriteLine(JsonConvert.SerializeObject(net.Description, Formatting.Indented));
+
+            var forwardFunc = net.GetEvaluationFunction();
+
+            foreach (var test in tests)
+            {
+                Console.WriteLine($"{test.Item1[0]}, {test.Item1[1]} => {forwardFunc(test.Item1)[0]}");
+            }
 
             Console.ReadKey();
         }
