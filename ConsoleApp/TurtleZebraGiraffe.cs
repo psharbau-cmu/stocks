@@ -10,10 +10,10 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
-            var nothing = new [] {.1f, .1f, .1f, .1f, .1f, .1f, .1f, .1f, .1f, .1f};
-            var turtle = new [] {1, .1f, .1f, .1f, .1f, .1f, .1f, .1f, .1f, .1f};
-            var zebra = new [] {1, 1, 1, 1, .1f, .1f, .1f, .1f, .1f, .1f};
-            var giraffe = new [] {1f, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+            var nothing = new [] {0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f};
+            var turtle = new [] {1f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f};
+            var zebra = new [] {1f, 1f, 1f, 1f, 0f, 0f, 0f, 0f, 0f, 0f};
+            var giraffe = new [] {1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1};
 
             var tests = new List<Tuple<float[], float[]>>
             {

@@ -18,7 +18,7 @@ namespace ConsoleApp
             //    var text = reader.ReadToEnd();
             //    description = JsonConvert.DeserializeObject<NetDescription>(text);
             //}
-            var description = SimpleDescriptionBuilder.GetDescription(2, new[] {2, 1});
+            var description = SimpleDescriptionBuilder.GetDescription(2, new[] {5, 1});
 
             var net = Net.FromDescription(description);
             
@@ -32,7 +32,7 @@ namespace ConsoleApp
 
             var trainer = new Trainer(tests, net);
 
-            trainer.Train(2f, 0.9f, 0.0001f, 1000000, true);
+            trainer.Train(.5f, 0.9f, 0.0001f, 1000000, true);
 
             Console.WriteLine(JsonConvert.SerializeObject(net.Description, Formatting.Indented));
 

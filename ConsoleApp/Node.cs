@@ -96,6 +96,9 @@ namespace ConsoleApp
                 case "sigmoid":
                     builder.AppendLine($"1 / (1 + Math.Pow(Math.E, -1 * agg{Id}));");
                     break;
+                case "softplus":
+                    builder.AppendLine($"Math.Log(1 + Math.Exp(agg{Id}));");
+                    break;
                 default:
                     throw new Exception($"Unknown processor {_processor}");
             }
@@ -127,6 +130,9 @@ namespace ConsoleApp
                 case "sigmoid":
                     builder.AppendLine($"1 / (1 + Math.Pow(Math.E, -1 * agg{Id}));");
                     break;
+                case "softplus":
+                    builder.AppendLine($"Math.Log(1 + Math.Exp(agg{Id}));");
+                    break;
                 default:
                     throw new Exception($"Unknown processor {_processor}");
             }
@@ -148,6 +154,9 @@ namespace ConsoleApp
                 {
                     case "sigmoid":
                         builder.AppendLine($"agg{Id} * (1 - agg{Id}) * pIn{Id};");
+                        break;
+                    case "softplus":
+                        builder.AppendLine($"1 / (1 + Math.Exp(-1 * agg{Id})) * pIn{Id};");
                         break;
                     case "default":
                         throw new Exception($"Unknown processor {_processor}");

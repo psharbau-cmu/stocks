@@ -20,7 +20,7 @@ namespace ConsoleApp
                 var layerIds = new int[layerCounts[i]];
                 for (var j = 0; j < layerCounts[i]; j++)
                 {
-                    var node = new Node(nodeId++, "sum", "sigmoid", 0f, 0);
+                    var node = new Node(nodeId++, "sum", "softplus", 0f, 0);
                     nodes.Add(node);
                     layerIds[j] = node.Id;
 
