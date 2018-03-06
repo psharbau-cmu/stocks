@@ -33,7 +33,7 @@ namespace ConsoleApp
         public void AddInput(NodeInputDescription inputDescription, int weightIndex)
         {
             if (!inputDescription.FromInputVector) _inputNodes.Add(inputDescription.InputId);
-            _inputDescriptions.Add(inputDescription, weightIndex);
+            _inputDescriptions.Add(inputDescription.Clone() as NodeInputDescription, weightIndex);
         }
 
         public void AddDownstream(int nodeId)

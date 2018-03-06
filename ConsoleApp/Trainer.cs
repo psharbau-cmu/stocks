@@ -10,7 +10,7 @@ namespace ConsoleApp
     {
         private readonly IEnumerable<Tuple<float[], float[]>> _testData;
         private readonly Net _net;
-        private readonly Random _random = new Random();
+        private static readonly Random _random = new Random();
 
         public Trainer(IEnumerable<Tuple<float[], float[]>> testData, Net net)
         {
@@ -52,15 +52,15 @@ namespace ConsoleApp
                     {
                         speeds[i] = (inertia * speeds[i]) + (learnFactor * deltas[i]);
                         weights[i] -= speeds[i];
-                        //if (weights[i] < -3) weights[i] = -3f;
-                        //else if (weights[i] > 3) weights[i] = 3f;
+                        if (weights[i] < -3) weights[i] = -3f;
+                        else if (weights[i] > 3) weights[i] = 3f;
                     }
                 }
                 avgError /= _testData.Count();
 
-                if (runCount % 50 == 0) Console.WriteLine($"After {runCount} runs, error is {avgError}");
+                if (runCount % 15 == 0) Console.WriteLine($"After {runCount} runs, error is {avgError}");
 
-                if (avgError > 1.10f * minError)
+                if (avgError > 1.03f * minError)
                 {
                     inertia *= .5f;
                     learnFactor *= .9f;
@@ -69,7 +69,7 @@ namespace ConsoleApp
                     Array.Copy(minWeights, weights, weights.Length);
                     avgError = minError;
                 }
-                else if (avgError < minError)
+                else if (avgError < .99 * minError)
                 {
                     minError = avgError;
                     Array.Copy(weights, minWeights, minWeights.Length);

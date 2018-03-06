@@ -1,0 +1,708 @@
+{
+  "Nodes": [
+    {
+      "NodeId": 0,
+      "Weight": -1.90190291,
+      "Inputs": [
+        {
+          "FromInputVector": true,
+          "InputId": 0,
+          "Weight": 2.9999938
+        },
+        {
+          "FromInputVector": true,
+          "InputId": 1,
+          "Weight": -1.15059817
+        },
+        {
+          "FromInputVector": true,
+          "InputId": 2,
+          "Weight": 0.9311411
+        },
+        {
+          "FromInputVector": true,
+          "InputId": 3,
+          "Weight": 0.4332987
+        }
+      ],
+      "Aggregator": "sum",
+      "Processor": "softplus"
+    },
+    {
+      "NodeId": 1,
+      "Weight": -1.21930778,
+      "Inputs": [
+        {
+          "FromInputVector": true,
+          "InputId": 0,
+          "Weight": 2.99996328
+        },
+        {
+          "FromInputVector": true,
+          "InputId": 1,
+          "Weight": -0.8859633
+        },
+        {
+          "FromInputVector": true,
+          "InputId": 2,
+          "Weight": -0.8760943
+        },
+        {
+          "FromInputVector": true,
+          "InputId": 3,
+          "Weight": 0.300970465
+        }
+      ],
+      "Aggregator": "sum",
+      "Processor": "softplus"
+    },
+    {
+      "NodeId": 2,
+      "Weight": -1.85196006,
+      "Inputs": [
+        {
+          "FromInputVector": true,
+          "InputId": 0,
+          "Weight": 2.999994
+        },
+        {
+          "FromInputVector": true,
+          "InputId": 1,
+          "Weight": -1.13050294
+        },
+        {
+          "FromInputVector": true,
+          "InputId": 2,
+          "Weight": 0.818711162
+        },
+        {
+          "FromInputVector": true,
+          "InputId": 3,
+          "Weight": 0.459067672
+        }
+      ],
+      "Aggregator": "sum",
+      "Processor": "softplus"
+    },
+    {
+      "NodeId": 3,
+      "Weight": -1.28332627,
+      "Inputs": [
+        {
+          "FromInputVector": true,
+          "InputId": 0,
+          "Weight": 2.99997878
+        },
+        {
+          "FromInputVector": true,
+          "InputId": 1,
+          "Weight": -0.908301
+        },
+        {
+          "FromInputVector": true,
+          "InputId": 2,
+          "Weight": -0.719148
+        },
+        {
+          "FromInputVector": true,
+          "InputId": 3,
+          "Weight": 0.4214771
+        }
+      ],
+      "Aggregator": "sum",
+      "Processor": "softplus"
+    },
+    {
+      "NodeId": 4,
+      "Weight": -1.68219531,
+      "Inputs": [
+        {
+          "FromInputVector": true,
+          "InputId": 0,
+          "Weight": 2.99999475
+        },
+        {
+          "FromInputVector": true,
+          "InputId": 1,
+          "Weight": -1.06419647
+        },
+        {
+          "FromInputVector": true,
+          "InputId": 2,
+          "Weight": 0.413442522
+        },
+        {
+          "FromInputVector": true,
+          "InputId": 3,
+          "Weight": 0.330987275
+        }
+      ],
+      "Aggregator": "sum",
+      "Processor": "softplus"
+    },
+    {
+      "NodeId": 5,
+      "Weight": -1.27087831,
+      "Inputs": [
+        {
+          "FromInputVector": true,
+          "InputId": 0,
+          "Weight": 2.99998164
+        },
+        {
+          "FromInputVector": true,
+          "InputId": 1,
+          "Weight": -0.906999648
+        },
+        {
+          "FromInputVector": true,
+          "InputId": 2,
+          "Weight": -0.7248382
+        },
+        {
+          "FromInputVector": true,
+          "InputId": 3,
+          "Weight": 0.3555108
+        }
+      ],
+      "Aggregator": "sum",
+      "Processor": "softplus"
+    },
+    {
+      "NodeId": 6,
+      "Weight": -2.49001312,
+      "Inputs": [
+        {
+          "FromInputVector": false,
+          "InputId": 0,
+          "Weight": 1.16920292
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 1,
+          "Weight": 0.758898
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 2,
+          "Weight": 1.133022
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 3,
+          "Weight": 0.921170354
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 4,
+          "Weight": 0.9834385
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 5,
+          "Weight": 0.904265344
+        }
+      ],
+      "Aggregator": "sum",
+      "Processor": "softplus"
+    },
+    {
+      "NodeId": 7,
+      "Weight": -2.35777926,
+      "Inputs": [
+        {
+          "FromInputVector": false,
+          "InputId": 0,
+          "Weight": 0.9091763
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 1,
+          "Weight": 1.1075927
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 2,
+          "Weight": 1.064672
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 3,
+          "Weight": 1.10428226
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 4,
+          "Weight": 1.00245118
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 5,
+          "Weight": 1.09720123
+        }
+      ],
+      "Aggregator": "sum",
+      "Processor": "softplus"
+    },
+    {
+      "NodeId": 8,
+      "Weight": -2.39988732,
+      "Inputs": [
+        {
+          "FromInputVector": false,
+          "InputId": 0,
+          "Weight": 1.013838
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 1,
+          "Weight": 1.09947681
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 2,
+          "Weight": 0.962064445
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 3,
+          "Weight": 1.04018259
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 4,
+          "Weight": 1.02069867
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 5,
+          "Weight": 0.97818464
+        }
+      ],
+      "Aggregator": "sum",
+      "Processor": "softplus"
+    },
+    {
+      "NodeId": 9,
+      "Weight": -2.42475748,
+      "Inputs": [
+        {
+          "FromInputVector": false,
+          "InputId": 0,
+          "Weight": 1.02792025
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 1,
+          "Weight": 0.9426272
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 2,
+          "Weight": 0.996930659
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 3,
+          "Weight": 1.0013833
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 4,
+          "Weight": 1.12765586
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 5,
+          "Weight": 0.9670651
+        }
+      ],
+      "Aggregator": "sum",
+      "Processor": "softplus"
+    },
+    {
+      "NodeId": 10,
+      "Weight": -2.46325469,
+      "Inputs": [
+        {
+          "FromInputVector": false,
+          "InputId": 0,
+          "Weight": 1.1744715
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 1,
+          "Weight": 0.955022752
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 2,
+          "Weight": 0.9775608
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 3,
+          "Weight": 0.9015972
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 4,
+          "Weight": 1.04461229
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 5,
+          "Weight": 0.868437052
+        }
+      ],
+      "Aggregator": "sum",
+      "Processor": "softplus"
+    },
+    {
+      "NodeId": 11,
+      "Weight": -2.45809031,
+      "Inputs": [
+        {
+          "FromInputVector": false,
+          "InputId": 0,
+          "Weight": 1.04542661
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 1,
+          "Weight": 0.8897963
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 2,
+          "Weight": 1.15790772
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 3,
+          "Weight": 0.901492536
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 4,
+          "Weight": 0.968235552
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 5,
+          "Weight": 0.98811096
+        }
+      ],
+      "Aggregator": "sum",
+      "Processor": "softplus"
+    },
+    {
+      "NodeId": 12,
+      "Weight": -2.91101766,
+      "Inputs": [
+        {
+          "FromInputVector": false,
+          "InputId": 6,
+          "Weight": -0.670158
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 7,
+          "Weight": -0.3859657
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 8,
+          "Weight": -0.4071174
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 9,
+          "Weight": -0.5927714
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 10,
+          "Weight": -0.6072614
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 11,
+          "Weight": -0.6637972
+        }
+      ],
+      "Aggregator": "sum",
+      "Processor": "softplus"
+    },
+    {
+      "NodeId": 13,
+      "Weight": -2.93412614,
+      "Inputs": [
+        {
+          "FromInputVector": false,
+          "InputId": 6,
+          "Weight": -1.16079426
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 7,
+          "Weight": -1.42521751
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 8,
+          "Weight": -1.31013727
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 9,
+          "Weight": -1.24772227
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 10,
+          "Weight": -1.29301584
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 11,
+          "Weight": -1.31373024
+        }
+      ],
+      "Aggregator": "sum",
+      "Processor": "softplus"
+    },
+    {
+      "NodeId": 14,
+      "Weight": -2.90754819,
+      "Inputs": [
+        {
+          "FromInputVector": false,
+          "InputId": 6,
+          "Weight": -0.6997634
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 7,
+          "Weight": -0.441123068
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 8,
+          "Weight": -0.523075
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 9,
+          "Weight": -0.5372876
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 10,
+          "Weight": -0.5750887
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 11,
+          "Weight": -0.5844171
+        }
+      ],
+      "Aggregator": "sum",
+      "Processor": "softplus"
+    },
+    {
+      "NodeId": 15,
+      "Weight": -2.91061068,
+      "Inputs": [
+        {
+          "FromInputVector": false,
+          "InputId": 6,
+          "Weight": -0.6515077
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 7,
+          "Weight": -0.392427117
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 8,
+          "Weight": -0.5626644
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 9,
+          "Weight": -0.49035728
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 10,
+          "Weight": -0.6707535
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 11,
+          "Weight": -0.561054766
+        }
+      ],
+      "Aggregator": "sum",
+      "Processor": "softplus"
+    },
+    {
+      "NodeId": 16,
+      "Weight": -2.87332916,
+      "Inputs": [
+        {
+          "FromInputVector": false,
+          "InputId": 6,
+          "Weight": -1.741743
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 7,
+          "Weight": -1.96784639
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 8,
+          "Weight": -1.96788168
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 9,
+          "Weight": -1.89081383
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 10,
+          "Weight": -1.801117
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 11,
+          "Weight": -1.82619071
+        }
+      ],
+      "Aggregator": "sum",
+      "Processor": "softplus"
+    },
+    {
+      "NodeId": 17,
+      "Weight": -2.942808,
+      "Inputs": [
+        {
+          "FromInputVector": false,
+          "InputId": 6,
+          "Weight": -1.48918307
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 7,
+          "Weight": -1.59235024
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 8,
+          "Weight": -1.44712591
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 9,
+          "Weight": -1.52904332
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 10,
+          "Weight": -1.401177
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 11,
+          "Weight": -1.39896309
+        }
+      ],
+      "Aggregator": "sum",
+      "Processor": "softplus"
+    },
+    {
+      "NodeId": 18,
+      "Weight": -0.128781974,
+      "Inputs": [
+        {
+          "FromInputVector": false,
+          "InputId": 12,
+          "Weight": 1.2789315
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 13,
+          "Weight": 0.8897668
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 14,
+          "Weight": 1.184583
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 15,
+          "Weight": 1.26721525
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 16,
+          "Weight": 1.46128261
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 17,
+          "Weight": 1.04006267
+        }
+      ],
+      "Aggregator": "sum",
+      "Processor": null
+    },
+    {
+      "NodeId": 19,
+      "Weight": -0.127757877,
+      "Inputs": [
+        {
+          "FromInputVector": false,
+          "InputId": 12,
+          "Weight": 0.938461661
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 13,
+          "Weight": 1.46413016
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 14,
+          "Weight": 0.9724163
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 15,
+          "Weight": 0.9437575
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 16,
+          "Weight": 1.99452448
+        },
+        {
+          "FromInputVector": false,
+          "InputId": 17,
+          "Weight": 1.58753955
+        }
+      ],
+      "Aggregator": "sum",
+      "Processor": null
+    }
+  ],
+  "Outputs": [
+    18,
+    19
+  ]
+}
