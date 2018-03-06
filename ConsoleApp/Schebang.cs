@@ -77,7 +77,7 @@ namespace ConsoleApp
             Console.WriteLine($"Training size: {trainTests.Count}");
             Console.WriteLine($"Testing Size:  {testTests.Count}");
 
-            var descripion = SimpleDescriptionBuilder.GetDescription(4, new[] {6, 6, 6, 2});
+            var descripion = SimpleDescriptionBuilder.GetDescription(4, new[] {4, 4, 3, 3, 2});
             foreach (var node in descripion.Nodes.Where(n => descripion.Outputs.Contains(n.NodeId)))
             {
                 node.Processor = null;
@@ -87,14 +87,14 @@ namespace ConsoleApp
             var trainers = new List<Trainer>();
             var tasks = new List<Task>();
 
-            for (var i = 0; i < 1; i++)
+            for (var i = 0; i < 4; i++)
             {
                 var net = Net.FromDescription(descripion);
                 var trainer = new Trainer(trainTests, net);
                 nets.Add(net);
                 trainers.Add(trainer);
 
-                tasks.Add(Task.Run(() => trainer.Train(.5f, .6f, .0001f, 100, true)));
+                tasks.Add(Task.Run(() => trainer.Train(.5f, 0f, .0001f, 100000, true)));
             }
             
             Task.WhenAll(tasks).GetAwaiter().GetResult();
