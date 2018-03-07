@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ConsoleApp
+namespace NNRunner.StockEvents
 {
     public struct Event
     {
