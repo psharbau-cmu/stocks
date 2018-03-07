@@ -8,6 +8,6 @@ namespace NNRunner
     public interface IProcessRepository<TSnapshot>
     {
         Guid CreateProcess(Action<Action<TSnapshot>> process);
-        ProcessProgress GetProcessProgress(Guid id);
+        ProcessProgress<TSnapshot> GetProcessProgress(Guid id);
     }
 }
