@@ -10,10 +10,10 @@ namespace NNRunner.Controllers
     [Route("api/stocks")]
     public class StocksController : Controller
     {
-        private readonly IProcessRepository<TrainingJob> _trainingJobRepository;
+        private readonly IProcessRepository<TrainingJob, float> _trainingJobRepository;
         private readonly IEventRepository _events;
 
-        public StocksController(IProcessRepository<TrainingJob> trainingJobRepository, IEventRepository events)
+        public StocksController(IProcessRepository<TrainingJob, float> trainingJobRepository, IEventRepository events)
         {
             _trainingJobRepository = trainingJobRepository;
             _events = events;
@@ -26,7 +26,7 @@ namespace NNRunner.Controllers
         }
         
         [HttpGet("training-jobs/{id}")]
-        public ProcessProgress<TrainingJob> GetTrainingJobs(Guid id)
+        public ProcessProgress<TrainingJob, float> GetTrainingJobs(Guid id)
         {
             return _trainingJobRepository.GetProcessProgress(id);
         }

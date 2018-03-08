@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace NNRunner
 {
-    public interface IProcessRepository<TSnapshot>
+    public interface IProcessRepository<TSnapshot, TSummary>
     {
         IEnumerable<Guid> GetIds();
         Guid CreateProcess(Action<Action<TSnapshot>, CancellationToken> process);
-        ProcessProgress<TSnapshot> GetProcessProgress(Guid id);
+        ProcessProgress<TSnapshot, TSummary> GetProcessProgress(Guid id);
         void StopProcess(Guid id);
     }
 }

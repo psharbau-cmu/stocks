@@ -83,7 +83,7 @@ namespace NNRunner.NeuralNet
                     _net.ReadWeights(weights);
                     progress(new TrainingJob(_net.Description, avgError, desiredError, learnFactor, inertia, maxRuns - runCount));
                 }
-                else if (runCount % 2000 == 0)
+                else if (runCount % 200 == 0)
                 {
                     _net.ReadWeights(weights);
                     progress(new TrainingJob(_net.Description, avgError, desiredError, learnFactor, inertia, maxRuns - runCount));
