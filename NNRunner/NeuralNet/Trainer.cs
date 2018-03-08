@@ -58,8 +58,8 @@ namespace NNRunner.NeuralNet
                     {
                         speeds[i] = (inertia * speeds[i]) + (learnFactor * deltas[i]);
                         weights[i] -= speeds[i];
-                        if (weights[i] < -300) weights[i] = -300f;
-                        else if (weights[i] > 300) weights[i] = 300f;
+                        if (weights[i] < -3) weights[i] = -3f;
+                        else if (weights[i] > 3) weights[i] = 3f;
                     }
                 }
                 avgError /= _testData.Count();

@@ -35,12 +35,18 @@ namespace NNRunner.Controllers
         public Guid Post(StocksTrainingJobRequest request)
         {
             // build description
-            request.HiddenLayerNodeCounts.Add(2);
+            request.HiddenLayerNodeCounts.Add(1);
             var description = SimpleDescriptionBuilder.GetDescription(4, request.HiddenLayerNodeCounts.ToArray());
             foreach (var id in description.Outputs)
             {
-                description.Nodes.Single(n => n.NodeId == id).Processor = null;
+                var outNode = description.Nodes.Single(n => n.NodeId == id);
+                outNode.Processor = null;
+                foreach (var nodeDescription in description.Nodes.Where(n => outNode.Inputs.Any(i => i.InputId == n.NodeId)))
+                {
+                    nodeDescription.Aggregator = "min";
+                }
             }
+            
 
             // get net
             var net = Net.FromDescription(description);

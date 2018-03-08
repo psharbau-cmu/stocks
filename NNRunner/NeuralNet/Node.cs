@@ -72,17 +72,39 @@ namespace NNRunner.NeuralNet
 
         public void AddForwardPropCode(StringBuilder builder)
         {
-            var mults = _inputDescriptions
-                .Select(d => $"({(d.Key.FromInputVector ? "in" : "out")}{d.Key.InputId} * {d.Key.Weight})")
-                .Concat(new[] { $"{_weight}" });
-
-            builder.Append($"var {(!string.IsNullOrEmpty(_processor) ? $"agg{Id}" : $"out{Id}")} = ");
+            var varName = !string.IsNullOrEmpty(_processor) ? $"agg{Id}" : $"out{Id}";
 
             switch (_aggregator)
             {
                 case "sum":
+                    var mults = _inputDescriptions
+                        .Select(d => $"({(d.Key.FromInputVector ? "in" : "out")}{d.Key.InputId} * {d.Key.Weight})")
+                        .Concat(new[] { $"{_weight}" })
+                        .ToArray();
+
+                    builder.Append($"var {varName} = ");
                     builder.AppendJoin("+", mults);
                     builder.AppendLine(";");
+                    break;
+                case "min":
+                    builder.AppendLine($"var {varName} = {_weight};");
+                    foreach (var input in _inputDescriptions)
+                    {
+                        var inputName = $"{(input.Key.FromInputVector ? "in" : "out")}{input.Key.InputId}";
+                        var multName = $"mult{Id}_{inputName}";
+                        builder.AppendLine($"var {multName} = (float)({inputName} * {input.Key.Weight});");
+                        builder.AppendLine($"{varName} = {varName} < {multName} ? {varName} : {multName};");
+                    }
+                    break;
+                case "max":
+                    builder.AppendLine($"var {varName} = {_weight};");
+                    foreach (var input in _inputDescriptions)
+                    {
+                        var inputName = $"{(input.Key.FromInputVector ? "in" : "out")}{input.Key.InputId}";
+                        var multName = $"mult{Id}_{inputName}";
+                        builder.AppendLine($"var {multName} = (float)({inputName} * {input.Key.Weight});");
+                        builder.AppendLine($"{varName} = {varName} > {multName} ? {varName} : {multName};");
+                    }
                     break;
                 default:
                     throw new Exception($"Unknown aggregator {_aggregator}");
@@ -106,25 +128,52 @@ namespace NNRunner.NeuralNet
 
         public void AddForwardPropCodeRefWeights(StringBuilder builder)
         {
-            var mults = _inputDescriptions
-                .Select(d => $"({(d.Key.FromInputVector ? "in" : "out")}{d.Key.InputId} * weights[{d.Value}])")
-                .Concat(new [] {$"weights[{_weightIndex}]"});
+            var varName =  $"agg{Id}";
 
-            builder.Append($"var {(!string.IsNullOrEmpty(_processor) ? $"agg{Id}" : $"out{Id}")} = ");
-            
             switch (_aggregator)
             {
                 case "sum":
+                    var mults = _inputDescriptions
+                        .Select(d => $"({(d.Key.FromInputVector ? "in" : "out")}{d.Key.InputId} * weights[{d.Value}])")
+                        .Concat(new[] {$"{_weight}"})
+                        .ToArray();
+
+                    builder.Append($"var {varName} = ");
                     builder.AppendJoin("+", mults);
                     builder.AppendLine(";");
+                    break;
+                case "min":
+                    builder.AppendLine($"var {varName} = weights[{_weightIndex}];");
+                    foreach (var input in _inputDescriptions)
+                    {
+                        var inputName = $"{(input.Key.FromInputVector ? "in" : "out")}{input.Key.InputId}";
+                        var multName = $"mult{Id}_{inputName}";
+                        builder.AppendLine($"var {multName} = (float)({inputName} * weights[{input.Value}]);");
+                        builder.AppendLine($"{varName} = {varName} < {multName} ? {varName} : {multName};");
+                    }
+                    break;
+                case "max":
+                    builder.AppendLine($"var {varName} = weights[{_weightIndex}];");
+                    foreach (var input in _inputDescriptions)
+                    {
+                        var inputName = $"{(input.Key.FromInputVector ? "in" : "out")}{input.Key.InputId}";
+                        var multName = $"mult{Id}_{inputName}";
+                        builder.AppendLine($"var {multName} = (float)({inputName} * weights[{input.Value}]);");
+                        builder.AppendLine($"{varName} = {varName} > {multName} ? {varName} : {multName};");
+                    }
                     break;
                 default:
                     throw new Exception($"Unknown aggregator {_aggregator}");
             }
 
-            if (string.IsNullOrEmpty(_processor)) return;
-
             builder.Append($"var out{Id} = ");
+            if (string.IsNullOrEmpty(_processor))
+            {
+                builder.Append($"agg{Id};");
+                return;
+            }
+
+            
             switch (_processor)
             {
                 case "sigmoid":
@@ -174,6 +223,18 @@ namespace NNRunner.NeuralNet
                         if (!input.Key.FromInputVector)
                         {
                             builder.AppendLine($"var pOut{Id}for{input.Key.InputId} = {varName} * weights[{input.Value}];");
+                        }
+                    }
+                    break;
+                case "min":
+                case "max":
+                    builder.AppendLine($"d[{_weightIndex}] = agg{Id} == weights[{_weightIndex}] ? (float){varName} : 0f;");
+                    foreach (var input in _inputDescriptions)
+                    {
+                        if (!input.Key.FromInputVector)
+                        {
+                            var multName = $"mult{Id}_out{input.Key.InputId}";
+                            builder.AppendLine($"var pOut{Id}for{input.Key.InputId} = agg{Id} == {multName} ? {varName} : 0;");
                         }
                     }
                     break;
