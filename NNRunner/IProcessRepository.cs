@@ -7,6 +7,7 @@ namespace NNRunner
 {
     public interface IProcessRepository<TSnapshot>
     {
+        IEnumerable<Guid> GetIds();
         Guid CreateProcess(Action<Action<TSnapshot>> process);
         ProcessProgress<TSnapshot> GetProcessProgress(Guid id);
     }

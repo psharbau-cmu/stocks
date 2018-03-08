@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
 
-namespace ConsoleApp
+namespace NNRunner.NeuralNet
 {
     public class Trainer
     {
@@ -18,7 +16,7 @@ namespace ConsoleApp
             _net = net;
         }
 
-        public void Train(float learnFactor, float inertia, float desiredError, int maxRuns, bool initializeWeights = false)
+        public void Train(float learnFactor, float inertia, float desiredError, int maxRuns, Action<TrainingJob> progress, bool initializeWeights = false)
         {
             var weights = new float[_net.NumberOfWeights];
             _net.FillWeights(weights);
@@ -69,15 +67,18 @@ namespace ConsoleApp
                     Array.Copy(minWeights, weights, weights.Length);
                     avgError = minError;
                 }
-                else if (avgError < .99 * minError)
+                else if (avgError < .995 * minError)
                 {
                     minError = avgError;
                     Array.Copy(weights, minWeights, minWeights.Length);
+                    _net.ReadWeights(weights);
+                    progress(new TrainingJob(_net.Description, avgError, desiredError, learnFactor, inertia, maxRuns - runCount));
                 }
             }
 
             Array.Copy(minWeights, weights, weights.Length);
             _net.ReadWeights(weights);
+            progress(new TrainingJob(_net.Description, avgError, desiredError, learnFactor, inertia, maxRuns - runCount));
         }
     }
 }

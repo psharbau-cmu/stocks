@@ -42,7 +42,6 @@ namespace NNRunner.StockEvents
                 {
                     var parts = reader.ReadLine().Split(",");
 
-
                     events.Add(new Event()
                     {
                         Symbol = parts[0],

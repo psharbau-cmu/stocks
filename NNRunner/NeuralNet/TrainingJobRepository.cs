@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace NNRunner.NeuralNet
 {
     public class TrainingJobRepository : IProcessRepository<TrainingJob>
     {
-        private Dictionary<Guid, ProcessProgress<TrainingJob>> _jobs = new Dictionary<Guid, ProcessProgress<TrainingJob>>();
+        private readonly Dictionary<Guid, ProcessProgress<TrainingJob>> _jobs = new Dictionary<Guid, ProcessProgress<TrainingJob>>();
 
         public Guid CreateProcess(Action<Action<TrainingJob>> process)
         {
@@ -24,6 +22,11 @@ namespace NNRunner.NeuralNet
             }
 
             return _jobs[id];
+        }
+
+        public IEnumerable<Guid> GetIds()
+        {
+            return _jobs.Keys;
         }
     }
 }

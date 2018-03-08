@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ConsoleApp;
-
-namespace NNRunner.NeuralNet
+﻿namespace NNRunner.NeuralNet
 {
     public class TrainingJob
     {
