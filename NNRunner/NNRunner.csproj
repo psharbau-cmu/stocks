@@ -2,10 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
     <StartupObject>NNRunner.Program</StartupObject>
   </PropertyGroup>
-
+  
   <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
@@ -23,10 +22,10 @@
 
   <ItemGroup>
     <None Update="testingEvents.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="trainingEvents.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

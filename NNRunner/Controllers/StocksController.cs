@@ -20,7 +20,7 @@ namespace NNRunner.Controllers
         }
 
         [HttpGet("training-jobs")]
-        public IEnumerable<Guid> Get()
+        public IEnumerable<Guid> GetJobs()
         {
             return _trainingJobRepository.GetIds();
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace NNRunner.StockEvents
@@ -17,7 +18,7 @@ namespace NNRunner.StockEvents
             get
             {
                 if (_trainingEvents != null) return _trainingEvents;
-                _trainingEvents = ReadEventFile(@".\TrainingEvents.csv").ToImmutableList();
+                _trainingEvents = ReadEventFile(@"trainingEvents.csv").ToImmutableList();
                 return _trainingEvents;
             }
         }
@@ -27,15 +28,16 @@ namespace NNRunner.StockEvents
             get
             {
                 if (_testingEvents != null) return _testingEvents;
-                _testingEvents = ReadEventFile(@".\TestingEvents.csv").ToImmutableList();
+                _testingEvents = ReadEventFile(@"testingEvents.csv").ToImmutableList();
                 return _testingEvents;
             }
         }
 
         private static IEnumerable<Event> ReadEventFile(string filePath)
         {
+            var path = Path.Combine(".", filePath);
             var events = new List<Event>();
-            using (var reader = new StreamReader(File.OpenRead(filePath)))
+            using (var reader = new StreamReader(File.OpenRead(path), Encoding.UTF8))
             {
                 reader.ReadLine();
                 while (!reader.EndOfStream)
