@@ -12,5 +12,6 @@ namespace NNRunner.Controllers
         public float DesiredError { get; set; }
         public float InitialLearningRate { get; set; }
         public float InitialMomentum { get; set; }
+        public float WeightVariance { get; set; }
     }
 }

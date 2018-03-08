@@ -23,19 +23,10 @@ namespace NNRunner.NeuralNet
             float desiredError,
             int maxRuns,
             Action<TrainingJob> progress,
-            CancellationToken cancel,
-            bool initializeWeights = false)
+            CancellationToken cancel)
         {
             var weights = new float[_net.NumberOfWeights];
             _net.FillWeights(weights);
-
-            if (initializeWeights)
-            {
-                for (var i = 0; i < weights.Length; i++)
-                {
-                    weights[i] = (float)(_random.NextDouble() * .2f) - .1f;
-                }
-            }
 
             var getDeltas = _net.GetTrainingFunction();
             var speeds = new float[_net.NumberOfWeights];

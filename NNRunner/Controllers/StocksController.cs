@@ -51,6 +51,9 @@ namespace NNRunner.Controllers
             // get net
             var net = Net.FromDescription(description);
 
+            // initialize weights
+            WeightFiller.FillWeights(net, request.WeightVariance);
+
             // get training events
             var tests = _events.TrainingEvents
                 .Select(evt => Tuple.Create(evt.GetInputArray(), evt.GetOutputArray()));
@@ -67,8 +70,7 @@ namespace NNRunner.Controllers
                         request.DesiredError,
                         request.MaxIterations,
                         progress,
-                        token,
-                        true));
+                        token));
         }
 
         [HttpPost("training-jobs/{id}")]
