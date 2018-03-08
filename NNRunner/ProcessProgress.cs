@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace NNRunner
@@ -10,14 +11,18 @@ namespace NNRunner
         private DateTimeOffset _lastDateTime;
         private TSnapshot _snapshot;
         private string _error;
+        private readonly CancellationTokenSource _tokenSource;
 
-        public ProcessProgress(Action<Action<TSnapshot>> process)
+        public ProcessProgress(Action<Action<TSnapshot>, CancellationToken> process)
         {
             Id = Guid.NewGuid();
             _snapshotsSent = 0;
             _lastDateTime = DateTimeOffset.Now;
             _snapshot = default(TSnapshot);
             _error = null;
+
+            _tokenSource = new CancellationTokenSource();
+            var token = _tokenSource.Token;
 
             try
             {
@@ -26,12 +31,17 @@ namespace NNRunner
                     _snapshotsSent += 1;
                     _lastDateTime = DateTimeOffset.Now;
                     _snapshot = snap;
-                }));
+                }, token));
             }
             catch (Exception ex)
             {
                 _error = ex.Message;
             }
+        }
+
+        public void Cancel()
+        {
+            _tokenSource.Cancel();
         }
         
         public Guid Id { get; }

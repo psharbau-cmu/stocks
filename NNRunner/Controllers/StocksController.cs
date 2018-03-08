@@ -54,14 +54,22 @@ namespace NNRunner.Controllers
 
             // add to the repository and return the id
             return _trainingJobRepository
-                .CreateProcess(progress => trainer
+                .CreateProcess((progress, token) => trainer
                     .Train(
                         request.InitialLearningRate,
                         request.InitialMomentum,
                         request.DesiredError,
                         request.MaxIterations,
                         progress,
+                        token,
                         true));
+        }
+
+        [HttpPost("training-jobs/{id}")]
+        public void StopJob(Guid id, StocksTrainingJobStopRequest stopRequest)
+        {
+            if (!stopRequest.Stop) throw new ArgumentException("Well then why'd you send it?");
+            _trainingJobRepository.StopProcess(id);
         }
     }
 }

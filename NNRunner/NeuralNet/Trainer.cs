@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace NNRunner.NeuralNet
 {
@@ -16,7 +17,14 @@ namespace NNRunner.NeuralNet
             _net = net;
         }
 
-        public void Train(float learnFactor, float inertia, float desiredError, int maxRuns, Action<TrainingJob> progress, bool initializeWeights = false)
+        public void Train(
+            float learnFactor,
+            float inertia,
+            float desiredError,
+            int maxRuns,
+            Action<TrainingJob> progress,
+            CancellationToken cancel,
+            bool initializeWeights = false)
         {
             var weights = new float[_net.NumberOfWeights];
             _net.FillWeights(weights);
@@ -36,7 +44,7 @@ namespace NNRunner.NeuralNet
             float minError = float.MaxValue;
             float avgError = float.MaxValue;
             int runCount = 0;
-            while (runCount < maxRuns && avgError > desiredError && learnFactor > 0.005f)
+            while (runCount < maxRuns && avgError > desiredError && learnFactor > 0.005f && !cancel.IsCancellationRequested)
             {
                 runCount += 1;
 
@@ -50,8 +58,8 @@ namespace NNRunner.NeuralNet
                     {
                         speeds[i] = (inertia * speeds[i]) + (learnFactor * deltas[i]);
                         weights[i] -= speeds[i];
-                        if (weights[i] < -3) weights[i] = -3f;
-                        else if (weights[i] > 3) weights[i] = 3f;
+                        if (weights[i] < -300) weights[i] = -300f;
+                        else if (weights[i] > 300) weights[i] = 300f;
                     }
                 }
                 avgError /= _testData.Count();
@@ -66,11 +74,17 @@ namespace NNRunner.NeuralNet
                     speeds = new float[_net.NumberOfWeights];
                     Array.Copy(minWeights, weights, weights.Length);
                     avgError = minError;
+                    progress(new TrainingJob(_net.Description, avgError, desiredError, learnFactor, inertia, maxRuns - runCount));
                 }
                 else if (avgError < .995 * minError)
                 {
                     minError = avgError;
                     Array.Copy(weights, minWeights, minWeights.Length);
+                    _net.ReadWeights(weights);
+                    progress(new TrainingJob(_net.Description, avgError, desiredError, learnFactor, inertia, maxRuns - runCount));
+                }
+                else if (runCount % 2000 == 0)
+                {
                     _net.ReadWeights(weights);
                     progress(new TrainingJob(_net.Description, avgError, desiredError, learnFactor, inertia, maxRuns - runCount));
                 }
