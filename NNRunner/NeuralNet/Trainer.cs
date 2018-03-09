@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Newtonsoft.Json;
 
 namespace NNRunner.NeuralNet
 {
@@ -30,10 +31,13 @@ namespace NNRunner.NeuralNet
 
             var getDeltas = _net.GetTrainingFunction();
             var speeds = new float[_net.NumberOfWeights];
+
+            var equalityCheck = 0;
             
             var minWeights = new float[_net.NumberOfWeights];
             float minError = float.MaxValue;
             float avgError = float.MaxValue;
+            float lastError = float.MaxValue;
             int runCount = 0;
             while (runCount < maxRuns && avgError > desiredError && learnFactor > 0.005f && !cancel.IsCancellationRequested)
             {
@@ -49,16 +53,23 @@ namespace NNRunner.NeuralNet
                     {
                         speeds[i] = (inertia * speeds[i]) + (learnFactor * deltas[i]);
                         weights[i] -= speeds[i];
-                        if (weights[i] < -3) weights[i] = -3f;
-                        else if (weights[i] > 3) weights[i] = 3f;
+                        if (weights[i] < -5) weights[i] = -5f;
+                        else if (weights[i] > 5) weights[i] = 5f;
                     }
                 }
                 avgError /= _testData.Count();
 
-                if (runCount % 15 == 0) Console.WriteLine($"After {runCount} runs, error is {avgError}");
-
-                if (avgError > 1.03f * minError)
+                if (Math.Abs(avgError - lastError) > 1e-7f)
                 {
+                    lastError = avgError;
+                    equalityCheck = 0;
+                }
+                else equalityCheck += 1;
+
+                if (avgError > 1.03f * minError || equalityCheck > 99)
+                {
+                    equalityCheck = 0;
+                    lastError = minError;
                     inertia *= .5f;
                     learnFactor *= .9f;
                     Console.WriteLine($"Resetting to last run, new learnFactor = {learnFactor}, new inertia = {inertia}");
