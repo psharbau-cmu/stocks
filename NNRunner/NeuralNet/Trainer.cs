@@ -10,7 +10,6 @@ namespace NNRunner.NeuralNet
     {
         private readonly IEnumerable<Tuple<float[], float[]>> _testData;
         private readonly Net _net;
-        private static readonly Random _random = new Random();
 
         public Trainer(IEnumerable<Tuple<float[], float[]>> testData, Net net)
         {
@@ -18,7 +17,7 @@ namespace NNRunner.NeuralNet
             _net = net;
         }
 
-        public void Train(
+        public float Train(
             float learnFactor,
             float inertia,
             float desiredError,
@@ -26,6 +25,8 @@ namespace NNRunner.NeuralNet
             Action<TrainingJob> progress,
             CancellationToken cancel)
         {
+            var testCount = _testData.Count();
+
             var weights = new float[_net.NumberOfWeights];
             _net.FillWeights(weights);
 
@@ -36,7 +37,7 @@ namespace NNRunner.NeuralNet
             
             var minWeights = new float[_net.NumberOfWeights];
             float minError = float.MaxValue;
-            float avgError = float.MaxValue;
+            double avgError = double.MaxValue;
             float lastError = float.MaxValue;
             int runCount = 0;
             while (runCount < maxRuns && avgError > desiredError && learnFactor > 0.005f && !cancel.IsCancellationRequested)
@@ -52,16 +53,20 @@ namespace NNRunner.NeuralNet
                     for (var i = 0; i < weights.Length; i++)
                     {
                         speeds[i] = (inertia * speeds[i]) + (learnFactor * deltas[i]);
+                        //var delta = 1 / deltas[i];
+                        //if (delta > 0.5) delta = .5f;
+                        //if (delta < -0.5) delta = -.5f;
+                        //speeds[i] = (inertia * speeds[i]) + (learnFactor * delta);
                         weights[i] -= speeds[i];
                         if (weights[i] < -5) weights[i] = -5f;
                         else if (weights[i] > 5) weights[i] = 5f;
                     }
                 }
-                avgError /= _testData.Count();
+                avgError /= testCount;
 
-                if (Math.Abs(avgError - lastError) > 1e-7f)
+                if (Math.Abs(avgError - lastError) > learnFactor * 2e-7f)
                 {
-                    lastError = avgError;
+                    lastError = (float)avgError;
                     equalityCheck = 0;
                 }
                 else equalityCheck += 1;
@@ -76,25 +81,26 @@ namespace NNRunner.NeuralNet
                     speeds = new float[_net.NumberOfWeights];
                     Array.Copy(minWeights, weights, weights.Length);
                     avgError = minError;
-                    progress(new TrainingJob(_net.Description, avgError, desiredError, learnFactor, inertia, maxRuns - runCount));
+                    progress(new TrainingJob(_net.Description, (float)avgError, desiredError, learnFactor, inertia, maxRuns - runCount));
                 }
                 else if (avgError < .995 * minError)
                 {
-                    minError = avgError;
+                    minError = (float)avgError;
                     Array.Copy(weights, minWeights, minWeights.Length);
                     _net.ReadWeights(weights);
-                    progress(new TrainingJob(_net.Description, avgError, desiredError, learnFactor, inertia, maxRuns - runCount));
+                    progress(new TrainingJob(_net.Description, (float)avgError, desiredError, learnFactor, inertia, maxRuns - runCount));
                 }
                 else if (runCount % 200 == 0)
                 {
                     _net.ReadWeights(weights);
-                    progress(new TrainingJob(_net.Description, avgError, desiredError, learnFactor, inertia, maxRuns - runCount));
+                    progress(new TrainingJob(_net.Description, (float)avgError, desiredError, learnFactor, inertia, maxRuns - runCount));
                 }
             }
 
             Array.Copy(minWeights, weights, weights.Length);
             _net.ReadWeights(weights);
-            progress(new TrainingJob(_net.Description, avgError, desiredError, learnFactor, inertia, maxRuns - runCount));
+            progress(new TrainingJob(_net.Description, minError, desiredError, learnFactor, inertia, maxRuns - runCount));
+            return minError;
         }
     }
 }

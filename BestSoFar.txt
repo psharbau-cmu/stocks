@@ -1,0 +1,1 @@
+{"Nodes":[{"NodeId":0,"Weight":-4.99264431,"Inputs":[{"FromInputVector":true,"InputId":0,"Weight":0.0103500308},{"FromInputVector":true,"InputId":1,"Weight":0.101931326},{"FromInputVector":true,"InputId":2,"Weight":-0.06195075},{"FromInputVector":true,"InputId":3,"Weight":-0.0882221162}],"Aggregator":"sum","Processor":null}],"Outputs":[0]}

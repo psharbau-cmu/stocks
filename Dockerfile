@@ -1,8 +1,8 @@
 FROM microsoft/aspnetcore-build:2.0 AS builder
 WORKDIR /source
-COPY *.csproj .
+COPY NNRunner/*.csproj .
 RUN dotnet restore
-COPY . .
+COPY NNRunner/ .
 RUN dotnet publish --output /app/ --configuration Release
 FROM microsoft/aspnetcore:2.0
 WORKDIR /app
