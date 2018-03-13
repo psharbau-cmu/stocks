@@ -24,6 +24,7 @@ namespace NNRunner
             services
                 .AddSingleton<IEventRepository, EventRepository>()
                 .AddSingleton<IProcessRepository<TrainingJob, float>, TrainingJobRepository>()
+                .AddSingleton<IProcessRepository<EvaluationJob, float>, EvaluationJobProcessRepository>()
                 .AddSwaggerGen(c => c.SwaggerDoc("NNRunner", new Info {Title = "NN Runner", Version = "v1"}))
                 .AddLogging(b =>
                 {

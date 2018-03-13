@@ -135,7 +135,7 @@ namespace NNRunner.NeuralNet
                 case "sum":
                     var mults = _inputDescriptions
                         .Select(d => $"({(d.Key.FromInputVector ? "in" : "out")}{d.Key.InputId} * weights[{d.Value}])")
-                        .Concat(new[] {$"{_weight}"})
+                        .Concat(new[] {$"weights[{_weightIndex}]"})
                         .ToArray();
 
                     builder.Append($"var {varName} = ");

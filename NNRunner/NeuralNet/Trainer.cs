@@ -54,8 +54,8 @@ namespace NNRunner.NeuralNet
                     {
                         speeds[i] = (inertia * speeds[i]) + (learnFactor * deltas[i]);
                         //var delta = 1 / deltas[i];
-                        //if (delta > 0.5) delta = .5f;
-                        //if (delta < -0.5) delta = -.5f;
+                        //if (delta > 3) delta = 3f;
+                        //if (delta < -3) delta = -3f;
                         //speeds[i] = (inertia * speeds[i]) + (learnFactor * delta);
                         weights[i] -= speeds[i];
                         if (weights[i] < -5) weights[i] = -5f;

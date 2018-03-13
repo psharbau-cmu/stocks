@@ -14,8 +14,9 @@ namespace NNRunner.Controllers
         private readonly IProcessRepository<TrainingJob, float> _trainingJobRepository;
         private readonly IEventRepository _events;
 
-        public StocksController(IProcessRepository<TrainingJob, float> trainingJobRepository, IEventRepository events)
+        public StocksController(IProcessRepository<TrainingJob, float> trainingJobRepository, IEventRepository events, IProcessRepository<EvaluationJob, float> evalJobRepository)
         {
+            _evalJobRepository = evalJobRepository;
             _trainingJobRepository = trainingJobRepository;
             _events = events;
         }
@@ -80,7 +81,7 @@ namespace NNRunner.Controllers
         }
 
         [HttpPost("evaluate-jobs")]
-        public Guid Evaluate(StocksEvaluationJobRequest request)
+        public Guid Evaluate([FromBody]StocksEvaluationJobRequest request)
         {
             var net = Net.FromDescription(request.Net);
             var data = _events.TrainingEvents
