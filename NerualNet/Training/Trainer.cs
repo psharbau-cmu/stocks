@@ -1,10 +1,10 @@
-﻿using System;
+﻿using NerualNet.Logic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Newtonsoft.Json;
 
-namespace NNRunner.NeuralNet
+namespace NeuralNet.Training
 {
     public class Trainer
     {
@@ -28,6 +28,7 @@ namespace NNRunner.NeuralNet
             var testCount = _testData.Count();
 
             var weights = new float[_net.NumberOfWeights];
+            var deltas = new float[_net.NumberOfWeights + 1];
             _net.FillWeights(weights);
 
             var getDeltas = _net.GetTrainingFunction();
@@ -47,7 +48,7 @@ namespace NNRunner.NeuralNet
                 avgError = 0;
                 foreach (var test in _testData)
                 {
-                    var deltas = getDeltas(test.Item1, test.Item2, weights);
+                    getDeltas(test.Item1, test.Item2, weights, deltas);
                     avgError += deltas.Last();
 
                     for (var i = 0; i < weights.Length; i++)
