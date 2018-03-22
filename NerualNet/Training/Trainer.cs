@@ -72,7 +72,7 @@ namespace NeuralNet.Training
                 }
                 else equalityCheck += 1;
 
-                if (avgError > 1.03f * minError || equalityCheck > 199)
+                if (avgError > 1.03f * minError || equalityCheck > 2000)
                 {
                     equalityCheck = 0;
                     lastError = minError;

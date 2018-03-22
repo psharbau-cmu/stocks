@@ -11,7 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NNRunner", "NNRunner\NNRunn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NNRunner.Tests", "NNRunner.Tests\NNRunner.Tests.csproj", "{7C1FBBA9-D574-44D9-AF83-8900900BED0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NerualNet", "NerualNet\NerualNet.csproj", "{19CF3A76-EB38-4182-A1F9-9BC96BB5FBF7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NerualNet", "NerualNet\NerualNet.csproj", "{19CF3A76-EB38-4182-A1F9-9BC96BB5FBF7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeuralNet.Tests", "NeuralNet.Tests\NeuralNet.Tests.csproj", "{1B095EE6-D7B6-4039-81EA-8459C4A70F78}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComeOn", "ComeOn\ComeOn.csproj", "{73EE9FF5-0F02-490C-B185-1763D2B3DDB7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,14 @@ Global
 		{19CF3A76-EB38-4182-A1F9-9BC96BB5FBF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19CF3A76-EB38-4182-A1F9-9BC96BB5FBF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19CF3A76-EB38-4182-A1F9-9BC96BB5FBF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B095EE6-D7B6-4039-81EA-8459C4A70F78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B095EE6-D7B6-4039-81EA-8459C4A70F78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B095EE6-D7B6-4039-81EA-8459C4A70F78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B095EE6-D7B6-4039-81EA-8459C4A70F78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73EE9FF5-0F02-490C-B185-1763D2B3DDB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73EE9FF5-0F02-490C-B185-1763D2B3DDB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73EE9FF5-0F02-490C-B185-1763D2B3DDB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73EE9FF5-0F02-490C-B185-1763D2B3DDB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

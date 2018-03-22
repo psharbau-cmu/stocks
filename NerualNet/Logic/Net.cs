@@ -106,7 +106,7 @@ namespace NerualNet.Logic
             }
         }
 
-        public Func<float[], float[], float[], float[], float[]> GetTrainingFunction()
+        public Action<float[], float[], float[], float[]> GetTrainingFunction()
         {
             var builder = new StringBuilder();
 
@@ -137,8 +137,7 @@ namespace NerualNet.Logic
             {
                 node.AddBackPropCode(builder);
             }
-
-            builder.AppendLine("return d;");
+            
             builder.AppendLine("})");
 
             var text = builder.ToString();
@@ -147,7 +146,7 @@ namespace NerualNet.Logic
                 .AddImports("System");
 
             return CSharpScript
-                .Create<Func<float[], float[], float[], float[], float[]>>(text, options)
+                .Create<Action<float[], float[], float[], float[]>>(text, options)
                 .RunAsync()
                 .GetAwaiter()
                 .GetResult()

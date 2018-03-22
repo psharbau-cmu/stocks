@@ -122,6 +122,9 @@ namespace NerualNet.Logic
                 case "softplus":
                     builder.AppendLine($"Math.Log(1 + Math.Exp(agg{Id}));");
                     break;
+                case "tanh":
+                    builder.AppendLine($"Math.Tanh(agg{Id});");
+                    break;
                 default:
                     throw new Exception($"Unknown processor {_processor}");
             }
@@ -175,6 +178,9 @@ namespace NerualNet.Logic
                 case "softplus":
                     builder.AppendLine($"Math.Log(1 + Math.Exp(agg{Id}));");
                     break;
+                case "tanh":
+                    builder.AppendLine($"Math.Tanh(agg{Id});");
+                    break;
                 default:
                     throw new Exception($"Unknown processor {_processor}");
             }
@@ -195,10 +201,13 @@ namespace NerualNet.Logic
                 switch (_processor)
                 {
                     case "sigmoid":
-                        builder.AppendLine($"agg{Id} * (1 - agg{Id}) * pIn{Id};");
+                        builder.AppendLine($"out{Id} * (1 - out{Id}) * pIn{Id};");
                         break;
                     case "softplus":
                         builder.AppendLine($"1 / (1 + Math.Exp(-1 * agg{Id})) * pIn{Id};");
+                        break;
+                    case "tanh":
+                        builder.AppendLine($"(1 - Math.Pow(out{Id}, 2));");
                         break;
                     case "default":
                         throw new Exception($"Unknown processor {_processor}");
