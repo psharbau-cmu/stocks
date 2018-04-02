@@ -106,7 +106,7 @@ namespace NerualNet.Logic
             }
         }
 
-        public Action<float[], float[], float[], float[]> GetTrainingFunction()
+        public Func<float[], float[], float[], float[], float> GetTrainingFunction()
         {
             var builder = new StringBuilder();
 
@@ -124,8 +124,7 @@ namespace NerualNet.Logic
 
             builder.Append("var error = (float)(");
             builder.Append(string.Join("+", _outputNodes.Select((id, i) => $"Math.Pow(out{id} - outputs[{i}], 2)")));
-            builder.AppendLine(");");
-            builder.AppendLine($"d[{_numberOfWeights}] = error;");
+            builder.AppendLine(")/2;");
 
             for (var i = 0; i < _outputNodes.Length; i++)
             {
@@ -137,7 +136,8 @@ namespace NerualNet.Logic
             {
                 node.AddBackPropCode(builder);
             }
-            
+
+            builder.AppendLine("return error;");
             builder.AppendLine("})");
 
             var text = builder.ToString();
@@ -146,7 +146,7 @@ namespace NerualNet.Logic
                 .AddImports("System");
 
             return CSharpScript
-                .Create<Action<float[], float[], float[], float[]>>(text, options)
+                .Create<Func<float[], float[], float[], float[], float>>(text, options)
                 .RunAsync()
                 .GetAwaiter()
                 .GetResult()

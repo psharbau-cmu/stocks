@@ -28,7 +28,7 @@ namespace NeuralNet.Training
             var testCount = _testData.Count();
 
             var weights = new float[_net.NumberOfWeights];
-            var deltas = new float[_net.NumberOfWeights + 1];
+            var deltas = new float[_net.NumberOfWeights];
             _net.FillWeights(weights);
 
             var getDeltas = _net.GetTrainingFunction();
@@ -48,8 +48,7 @@ namespace NeuralNet.Training
                 avgError = 0;
                 foreach (var test in _testData)
                 {
-                    getDeltas(test.Item1, test.Item2, weights, deltas);
-                    avgError += deltas.Last();
+                    avgError += getDeltas(test.Item1, test.Item2, weights, deltas);
 
                     for (var i = 0; i < weights.Length; i++)
                     {
